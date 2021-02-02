@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import QuestionItem from './QuestionItem'
 import Button from '@material-ui/core/Button'
 import { nanoid } from 'nanoid'
 import QuestionSelect from './features/question/questionSelect'

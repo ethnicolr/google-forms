@@ -3,15 +3,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles({
   formControl: {
-    margin: theme.spacing(1),
     width: '100%',
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}))
+  selectEmpty: {},
+})
 
 export default function QuestionTypeSelect({ onSelect, selected }) {
   const classes = useStyles()
@@ -20,8 +18,8 @@ export default function QuestionTypeSelect({ onSelect, selected }) {
     onSelect(event.target.value)
   }
   return (
-    <div>
-      <FormControl className={classes.formControl}>
+    <>
+      <FormControl className={classes.formControl} variant='outlined'>
         <Select
           labelId='demo-simple-select-label'
           id='demo-simple-select'
@@ -40,6 +38,6 @@ export default function QuestionTypeSelect({ onSelect, selected }) {
           <MenuItem value={'time'}>time</MenuItem>
         </Select>
       </FormControl>
-    </div>
+    </>
   )
 }

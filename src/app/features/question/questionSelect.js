@@ -1,11 +1,36 @@
 import React, { useState } from 'react'
-import QuestionItem from '../../QuestionItem'
 import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core/styles'
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
 import { nanoid } from 'nanoid'
-import QestionForm from './qestionOption'
+import QestionSelectItem from './qestionSelectItem'
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
 
-export default function QestionSelectItem({ mode, grid }) {
+const useStyles = makeStyles({
+  items: {
+    margin: 0,
+    padding: 0,
+    listStyle: 'none',
+    marginBottom: '20px',
+  },
+  item: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+  },
+  input: {
+    width: '100%',
+    marginLeft: '10px',
+  },
+  icon: {
+    paddingTop: '5px',
+  },
+})
+
+export default function QestionSelect({ mode, grid }) {
   const [state, setState] = useState([{ value: 'Вариант 1', id: nanoid() }])
+  const classes = useStyles()
 
   const handleAddItem = () => {
     setState((state) => [
@@ -19,16 +44,28 @@ export default function QestionSelectItem({ mode, grid }) {
   }
 
   return (
-    <div>
-      <ul>
+    <>
+      <ul className={classes.items}>
         {state.map((elem) => {
           return (
-            <li key={elem.id}>
-              <QuestionItem
-                value={elem.value}
-                id={elem.id}
-                onDelete={handleDelete}
+            <li className={classes.item} key={elem.id}>
+              <RadioButtonUncheckedIcon
+                className={classes.icon}
+                color='disabled'
               />
+              <div className={classes.input}>
+                <QestionSelectItem
+                  initValue={elem.value}
+                  id={elem.id}
+                  onDelete={handleDelete}
+                />
+              </div>
+              <IconButton
+                aria-label='delete'
+                onClick={() => handleDelete(elem.id)}
+              >
+                <DeleteIcon />
+              </IconButton>
             </li>
           )
         })}
@@ -36,6 +73,6 @@ export default function QestionSelectItem({ mode, grid }) {
       <Button variant='contained' onClick={handleAddItem}>
         Добавить вариант
       </Button>
-    </div>
+    </>
   )
 }
