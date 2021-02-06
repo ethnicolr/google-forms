@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
+import React, { useState, useContext } from 'react'
+import { ContextEditMod } from './../../Container'
+import { TextareaGrey } from './../../lib'
+import { Textarea, ContainerField, EditStripeInput } from './../../lib'
 
 export default function QestionInput() {
+  const edit = useContext(ContextEditMod)
+  console.log(edit)
   return (
-    <>
-      <TextField
-        id='filled-secondary'
-        variant='filled'
-        fullWidth
-        placeholder='вопрос'
-      />
-    </>
+    <ContainerField>
+      <Textarea id='filled-secondary' placeholder='вопрос' isEdit={edit} />
+
+      {edit ? <EditStripeInput /> : null}
+    </ContainerField>
   )
 }

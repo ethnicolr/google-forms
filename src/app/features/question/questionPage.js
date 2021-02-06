@@ -1,19 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
 import QuestionTypeSelect from './questionTypeSelect'
 import QestionInput from './qestionInput'
-import QestionOption from './qestionOption'
+import { ContextEditMod } from './../../Container'
 
+import QestionOption from './qestionOption'
 const useStyles = makeStyles({
   root: {
-    border: '2px solid #dedede;',
-    backgroundColor: '#fff',
-    padding: '25px 15px',
-    borderRadius: '5px',
-    textAlign: 'left',
-    width: '500px',
-    marginTop: '25px',
     display: 'flex',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
@@ -36,6 +29,7 @@ export default function QuestionPage() {
   const handleSelect = (type) => {
     setTypeQuestion(type)
   }
+  const edit = useContext(ContextEditMod)
 
   const classes = useStyles()
   return (
@@ -43,9 +37,12 @@ export default function QuestionPage() {
       <div className={classes.input}>
         <QestionInput />
       </div>
-      <div className={classes.select}>
-        <QuestionTypeSelect onSelect={handleSelect} selected={typeQuestion} />
-      </div>
+      {edit ? (
+        <div className={classes.select}>
+          <QuestionTypeSelect onSelect={handleSelect} selected={typeQuestion} />
+        </div>
+      ) : null}
+
       <div className={classes.option}>
         <QestionOption typeItems={typeQuestion} />
       </div>
