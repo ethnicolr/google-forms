@@ -36,12 +36,10 @@ function selectReducer(state, action) {
     }
 
     case 'delete': {
-      console.log(action)
       return state.filter((item) => item.id !== action.id)
     }
 
     case 'edit': {
-      console.log(action)
       return state.map((item) => {
         if (item.id === action.id) {
           return { ...item, value: action.value }
@@ -63,10 +61,7 @@ export default function QestionSelect({ mode, grid }) {
   const deleteItem = (id) => dispatch({ type: 'delete', id })
   const editItem = (id, value) => dispatch({ type: 'edit', value, id })
   const [updateItem] = useContext(StateContex)
-  console.log(updateItem)
-  useEffect(() => {
-    console.log('update')
-  }, [state])
+  useEffect(() => {}, [state])
 
   return (
     <>

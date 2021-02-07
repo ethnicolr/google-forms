@@ -5,7 +5,6 @@ import { Textarea, ContainerField, EditStripeInput } from './../../lib'
 
 export default function QestionInput() {
   const edit = useContext(ContextEditMod)
-  console.log(edit)
   return (
     <ContainerField>
       <Textarea id='filled-secondary' placeholder='вопрос' isEdit={edit} />
