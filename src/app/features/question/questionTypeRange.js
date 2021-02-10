@@ -7,7 +7,7 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import { nanoid } from 'nanoid'
 
-export default function QuestionRange() {
+export default function QuestionTypeRange() {
   const [range, setRagne] = useState({ from: 0, to: 10 })
 
   const handleChange = (e) => {

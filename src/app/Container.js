@@ -12,7 +12,7 @@ import {
 
 export const ContextEditMod = React.createContext()
 
-export default function Container({ Component, head }) {
+export default function Container({ Component, head, data }) {
   const [edit, setEdit] = useState(true)
 
   const wrapperRef = useRef(null)
@@ -52,9 +52,12 @@ export default function Container({ Component, head }) {
         ></div>
       ) : null}
       {edit ? <EditStripe /> : null}
-      <ContextEditMod.Provider value={edit}>
-        <Component />
+      <ContextEditMod.Provider value={{ edit }}>
+        <Component data={data} />
       </ContextEditMod.Provider>
     </div>
   )
+}
+export function useEditMod() {
+  return React.useContext(ContextEditMod)
 }

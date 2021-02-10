@@ -1,50 +1,76 @@
-import React, { useState, useRef, useContext } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import QuestionTypeSelect from './questionTypeSelect'
-import QestionInput from './qestionInput'
-import { ContextEditMod } from './../../Container'
+/** @jsxImportSource @emotion/react */
+import React, { useState, useEffect, useCallback } from 'react'
+import QuestionTypeSelect from './questionSwitch'
+import QestionInput from './questionHeading'
+import QestionParameters from './questionParameters'
+import { useEditMod } from './../../Container'
+import { useContextState } from './../../App'
+import Select from './../../components/Select'
+import Option from './../../components/Option'
 
-import QestionOption from './qestionOption'
-const useStyles = makeStyles({
-  root: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  },
-  input: {
-    width: '60%',
-  },
-  select: {
-    width: '30%',
-  },
-  option: {
-    width: '100%',
-    marginTop: '30px',
-  },
-})
+export default function QuestionPage({ data }) {
+  const [_, updateQuestion] = useContextState()
+  const [state, setState] = useState(data)
 
-export default function QuestionPage() {
   const [typeQuestion, setTypeQuestion] = useState('select-radio')
 
   const handleSelect = (type) => {
     setTypeQuestion(type)
   }
-  const edit = useContext(ContextEditMod)
+  const edit = useEditMod()
+  const changeTitle = (value) => {
+    setState((state) => ({ ...state, title: value }))
+  }
+  const changeQuestionType = (type) => {
+    setState((state) => ({ ...state, type }))
+  }
 
-  const classes = useStyles()
+  const changeParameters = useCallback((params, type) => {
+    setState((state) => ({
+      ...state,
+      parameters: { ...state.parameters, [type]: params },
+    }))
+  }, [])
+
+  useEffect(() => {
+    updateQuestion(state.id, state)
+  }, [state, updateQuestion])
+
   return (
-    <div className={classes.root}>
-      <div className={classes.input}>
-        <QestionInput />
+    <div
+      css={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+      }}
+    >
+      <div css={{ width: '60%' }}>
+        <QestionInput changeTitle={changeTitle} />
       </div>
       {edit ? (
-        <div className={classes.select}>
-          <QuestionTypeSelect onSelect={handleSelect} selected={typeQuestion} />
+        <div css={{ width: '30%' }}>
+          <Select onChange={changeQuestionType} seleced={state.parameters.type}>
+            <Option value={'text-line'}>text-line</Option>
+            <Option value={'text-paragraph'}>text-paragraph</Option>
+            <Option value={'select-radio'}>select-radio</Option>
+            <Option value={'select-check'}>select-check</Option>
+            <Option value={'select-drop'}>select-drop</Option>
+            <Option value={'range'}>range</Option>
+            <Option value={'grid-radio'}>grid-radio</Option>
+            <Option value={'grid-check'}>grid-check</Option>
+            <Option value={'date'}>date</Option>
+            <Option value={'time'}>time</Option>
+          </Select>
+          {/* <QuestionTypeSelect onSelect={handleSelect} selected={typeQuestion} /> */}
         </div>
       ) : null}
 
-      <div className={classes.option}>
-        <QestionOption typeItems={typeQuestion} />
+      <div css={{ width: '100%', marginTop: '30px' }}>
+        <QestionParameters
+          typeItems={state.type}
+          updateQuestion={changeParameters}
+          initialParam={state.parameters}
+        />
       </div>
     </div>
   )

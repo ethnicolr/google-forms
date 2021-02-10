@@ -7,7 +7,7 @@ const useStyles = makeStyles({
     color: '#000',
   },
 })
-export default function QuestionText({ mode }) {
+export default function QuestionTypeText({ mode }) {
   const classes = useStyles()
 
   let text

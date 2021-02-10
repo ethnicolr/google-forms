@@ -1,97 +1,99 @@
 /** @jsxImportSource @emotion/react */
 import { jsx } from '@emotion/react'
-import React, { useState } from 'react'
-import styled from '@emotion/styled'
+import React, { useState, useEffect, useReducer, useContext } from 'react'
+import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/core/styles'
+import QestionSelectItem from './questionTypeSelectItem'
+import { useEditMod } from '../../Container'
+import { nanoid } from 'nanoid'
 
-const List = styled.ul`
-  display: ${(props) => (props.isHidden ? 'flex' : 'none')};
-  flex-direction: column;
-  position: absolute;
-  z-index: 5;
-  background: #ffffff;
-  color: #000;
-  list-style: none;
-  border-radius: 4px;
-  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302),
-    0 2px 6px 2px rgba(60, 64, 67, 0.149);
-  font-size: 15px;
-  padding: 0;
-`
-const SeparatorLine = styled.div`
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-`
+const useStyles = makeStyles({
+  items: {
+    margin: 0,
+    padding: 0,
+    listStyle: 'none',
+    marginBottom: '20px',
+  },
+  item: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+  },
+  input: {
+    width: '100%',
+    marginLeft: '10px',
+  },
+  icon: {
+    paddingTop: '5px',
+  },
+})
 
-const ListItem = styled.li`
-  padding: 5px 15px;
-  font-size: 14px;
-  poiner: cursor;
-  letter-spacing: 0.2px;
-  cursor: pointer;
-  &:hover {
-    background-color: #eeeeee;
+function selectReducer(state, action) {
+  switch (action.type) {
+    case 'create': {
+      return [...state, { value: `Вариант ${state.length + 1}`, id: nanoid() }]
+    }
+
+    case 'delete': {
+      return state.filter((item) => item.id !== action.id)
+    }
+
+    case 'edit': {
+      return state.map((item) => {
+        if (item.id === action.id) {
+          return { ...item, value: action.value }
+        }
+        return item
+      })
+    }
+    default:
+      break
   }
-`
-
-function Item({ handleClick, value }) {
-  return <ListItem onClick={() => handleClick(value)}>{value}</ListItem>
 }
-
-function Select({ children, onChange }) {
-  const [hidden, setHidden] = useState(false)
-  const [selected, setSelected] = useState(children[4].props.value)
-  const toggle = () => setHidden(!hidden)
-  const handleClick = (value) => {
-    onChange(value)
-    setSelected(value)
-    toggle()
-  }
-
-  let type = null
-  return (
-    <>
-      <button onClick={toggle}>{selected}</button>
-      <List isHidden={hidden}>
-        {React.Children.map(children, (child) => {
-          //Allow type
-          if (typeof child.type === 'string') return child
-          const newChild = React.cloneElement(child, {
-            handleClick,
-          })
-          const typeItem = newChild.props.value.split('-')[0]
-          if (type !== null && type !== typeItem) {
-            type = typeItem
-            return (
-              <>
-                <SeparatorLine />
-                {newChild}
-              </>
-            )
-          }
-          type = typeItem
-          return newChild
-        })}
-      </List>
-    </>
+export default function QuestionTypeSelect({
+  mode,
+  grid,
+  head,
+  updateQuestion,
+  initialState,
+}) {
+  const [state, dispatch] = useReducer(
+    selectReducer,
+    initialState || [{ value: 'Вариант 1', id: nanoid() }]
   )
-}
-export default function QuestionTypeSelect({ onSelect, selected }) {
-  const handleChange = (value) => {
-    onSelect(value)
-  }
+  const classes = useStyles()
+  const { edit } = useEditMod()
+  const addItem = () => dispatch({ type: 'create' })
+  const deleteItem = (id) => dispatch({ type: 'delete', id })
+  const editItem = (id, value) => dispatch({ type: 'edit', value, id })
+
+  useEffect(() => {
+    updateQuestion(state, head)
+  }, [updateQuestion, state, head])
+
   return (
-    <>
-      <Select onChange={handleChange}>
-        <Item value={'text-line'}>text-line</Item>
-        <Item value={'text-paragraph'}>text-paragraph</Item>
-        <Item value={'select-radio'}>select-radio</Item>
-        <Item value={'select-check'}>select-check</Item>
-        <Item value={'select-drop'}>select-drop</Item>
-        <Item value={'range'}>range</Item>
-        <Item value={'grid-radio'}>grid-radio</Item>
-        <Item value={'grid-check'}>grid-check</Item>
-        <Item value={'date'}>date</Item>
-        <Item value={'time'}>time</Item>
-      </Select>
-    </>
+    <div>
+      {grid ? <h4 css={{ color: '#000' }}>{head}</h4> : null}
+      <ul className={classes.items}>
+        {state.map((elem) => {
+          return (
+            <li className={classes.item} key={elem.id}>
+              <QestionSelectItem
+                initValue={elem.value}
+                id={elem.id}
+                onChange={editItem}
+                onDelete={deleteItem}
+                value={elem.value}
+              />
+            </li>
+          )
+        })}
+      </ul>
+      {edit ? (
+        <Button variant='contained' onClick={addItem}>
+          Добавить вариант
+        </Button>
+      ) : null}
+    </div>
   )
 }

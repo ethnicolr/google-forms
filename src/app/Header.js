@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { jsx } from '@emotion/react'
 import React, { useEffect, useState, useRef } from 'react'
-import { Container } from './Container'
-import { useOnClickOutside } from './hooks/useOnClickOutside'
+import { useEditMod } from './Container'
 import { Textarea, ContainerField, EditStripeInput } from './lib'
 
-export default function Header({ edit }) {
+export default function Header() {
   const [state, setState] = useState({
     title: 'Новая форма',
     desc: 'Описание',
   })
+  const { edit } = useEditMod()
 
   const handleChange = (e) => {
     const { name, value } = e.target

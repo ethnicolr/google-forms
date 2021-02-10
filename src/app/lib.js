@@ -14,6 +14,20 @@ export const Textarea = styled.textarea`
   border: none;
   resize: none;
 `
+export const Input = styled.input`
+  font-size: 34px;
+  font-weight: 400;
+  outline: none;
+  padding: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  width: 100%;
+  height: 48px;
+  border: none;
+  &:hover {
+    background-color: #f8f9fa;
+  }
+`
 
 export const TextareaGrey = styled(Textarea)`
   background-color: #f8f9fa;
