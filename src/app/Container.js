@@ -52,9 +52,8 @@ export default function Container({ Component, head, data }) {
         ></div>
       ) : null}
       {edit ? <EditStripe /> : null}
-      <ContextEditMod.Provider value={{ edit }}>
-        <Component data={data} />
-      </ContextEditMod.Provider>
+      {/* <Component data={data} /> */}
+      {React.cloneElement(children, { edit })}
     </div>
   )
 }

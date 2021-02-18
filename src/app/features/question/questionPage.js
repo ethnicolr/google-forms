@@ -2,38 +2,45 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import QuestionTypeSelect from './questionSwitch'
 import QestionInput from './questionHeading'
-import QestionParameters from './questionParameters'
-import { useEditMod } from './../../Container'
+import QuestionSwitch from './questionSwitch'
+import { useContextEditMod } from './../../Container'
 import { useContextState } from './../../App'
 import Select from './../../components/Select'
 import Option from './../../components/Option'
-
+import useQuestionState from './../../hooks/useQuestionState'
+import { OptionRadio } from './../../assets/optionRadio'
 export default function QuestionPage({ data }) {
   const [_, updateQuestion] = useContextState()
-  const [state, setState] = useState(data)
+  const [
+    state,
+    changeTitle,
+    changeQuestionType,
+    changeParameters,
+  ] = useQuestionState(data)
+  const edit = useContextEditMod()
+  console.log(state)
 
-  const [typeQuestion, setTypeQuestion] = useState('select-radio')
+  // const [typeQuestion, setTypeQuestion] = useState('select-radio')
 
-  const handleSelect = (type) => {
-    setTypeQuestion(type)
-  }
-  const edit = useEditMod()
-  const changeTitle = (value) => {
-    setState((state) => ({ ...state, title: value }))
-  }
-  const changeQuestionType = (type) => {
-    setState((state) => ({ ...state, type }))
-  }
+  // const handleSelect = (type) => {
+  //   setTypeQuestion(type)
+  // }
+  // const changeTitle = (value) => {
+  //   setState((state) => ({ ...state, title: value }))
+  // }
+  // const changeQuestionType = (type) => {
+  //   setState((state) => ({ ...state, type }))
+  // }
 
-  const changeParameters = useCallback((params, type) => {
-    setState((state) => ({
-      ...state,
-      parameters: { ...state.parameters, [type]: params },
-    }))
-  }, [])
+  // const changeParameters = useCallback((params, type) => {
+  //   setState((state) => ({
+  //     ...state,
+  //     parameters: { ...state.parameters, [type]: params },
+  //   }))
+  // }, [])
 
   useEffect(() => {
-    updateQuestion(state.id, state)
+    updateQuestion(state)
   }, [state, updateQuestion])
 
   return (
@@ -45,30 +52,38 @@ export default function QuestionPage({ data }) {
       }}
     >
       <div css={{ width: '60%' }}>
-        <QestionInput changeTitle={changeTitle} />
+        <QestionInput changeTitle={changeTitle} edit={edit} />
       </div>
       {edit ? (
         <div css={{ width: '30%' }}>
           <Select onChange={changeQuestionType} seleced={state.parameters.type}>
-            <Option value={'text-line'}>text-line</Option>
-            <Option value={'text-paragraph'}>text-paragraph</Option>
-            <Option value={'select-radio'}>select-radio</Option>
-            <Option value={'select-check'}>select-check</Option>
-            <Option value={'select-drop'}>select-drop</Option>
-            <Option value={'range'}>range</Option>
-            <Option value={'grid-radio'}>grid-radio</Option>
-            <Option value={'grid-check'}>grid-check</Option>
-            <Option value={'date'}>date</Option>
-            <Option value={'time'}>time</Option>
+            <Option value={'text-line'}>Текст (строка)</Option>
+            <Option value={'text-paragraph'}>Текст (абзац)</Option>
+            <Option value={'select-radio'}>
+              <OptionRadio />
+              Один из списка
+            </Option>
+            <Option value={'select-check'}>
+              <OptionRadio />
+              Несколько из списка
+            </Option>
+            <Option value={'select-drop'}>
+              <OptionRadio />
+              Раскрывающийся список
+            </Option>
+            <Option value={'range'}>Шкала</Option>
+            <Option value={'grid-radio'}>Сетка (можественный выбор)</Option>
+            <Option value={'grid-check'}>Сетка флажков</Option>
+            <Option value={'date'}>Дата</Option>
+            <Option value={'time'}>Время</Option>
           </Select>
-          {/* <QuestionTypeSelect onSelect={handleSelect} selected={typeQuestion} /> */}
         </div>
       ) : null}
 
       <div css={{ width: '100%', marginTop: '30px' }}>
-        <QestionParameters
+        <QuestionSwitch
           typeItems={state.type}
-          updateQuestion={changeParameters}
+          updateParameters={changeParameters}
           initialParam={state.parameters}
         />
       </div>

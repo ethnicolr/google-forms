@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/react'
 import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
-import { useEditMod } from '../../Container'
+// import { useEditMod } from '../../Container'
 
 // import Input from '@material-ui/core/Input'
 import { EditStripeInput } from '../../lib'
@@ -29,9 +29,10 @@ export default function QuestionTypeSelectItem({
   onDelete,
   id,
   type,
+  edit,
 }) {
   const inputEl = useRef(null)
-  const { edit } = useEditMod()
+  // const { edit } = useEditMod()
   const handleChange = (e) => {
     onChange(id, e.target.value)
   }

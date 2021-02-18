@@ -3,8 +3,8 @@ import { ContextEditMod } from '../../Container'
 import { TextareaGrey } from '../../lib'
 import { Input, ContainerField, EditStripeInput } from '../../lib'
 
-export default function QuestionHeading({ changeTitle }) {
-  const edit = useContext(ContextEditMod)
+export default function QuestionHeading({ changeTitle, edit }) {
+  // const edit = useContext(ContextEditMod)
   const handleChange = (e) => {
     changeTitle(e.target.value)
   }
