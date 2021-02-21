@@ -5,25 +5,65 @@ import styled from '@emotion/styled'
 
 const SeparatorLine = styled.div`
   border-top: 1px solid rgba(0, 0, 0, 0.12);
+  margin: 8px 0;
 `
 export default function Select({ children, onChange }) {
   const [hidden, setHidden] = useState(false)
-  const [selected, setSelected] = useState(children[0].props.value)
+  const [selected, setSelected] = useState(children[0].props.children)
 
   const toggle = () => setHidden(!hidden)
-  const handleClick = (value) => {
+
+  const handleClick = (value, children) => {
     onChange(value)
-    setSelected(value)
+    setSelected(children)
     toggle()
   }
 
-  let type = null
+  function options() {
+    let type = null
+    return React.Children.map(children, (child) => {
+      if (typeof child.type === 'string') return child
+      const isSelect = child.props.value === selected
+      const newChild = React.cloneElement(child, {
+        handleClick,
+        isSelect,
+      })
+      const typeItem = newChild.props.value.split('-')[0]
+      if (type !== null && type !== typeItem) {
+        type = typeItem
+        return (
+          <>
+            <SeparatorLine />
+            {newChild}
+          </>
+        )
+      }
+      type = typeItem
+      return newChild
+    })
+  }
+
   return (
     <>
-      <button onClick={toggle}>{selected}</button>
+      <button
+        css={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '15px 10px 15px 15px',
+          width: '100%',
+          background: 'none',
+          outline: 'none',
+          border: '1px solid #dadce0',
+          borderRadius: '5px',
+        }}
+        onClick={toggle}
+      >
+        {React.Children.map(selected, (item) => item)}
+      </button>
       <ul
         css={{
           display: hidden ? 'flex' : 'none',
+          width: '310px',
           flexDirection: 'column',
           position: 'absolute',
           zIndex: '5',
@@ -37,25 +77,7 @@ export default function Select({ children, onChange }) {
           padding: 0,
         }}
       >
-        {React.Children.map(children, (child) => {
-          //Allow type
-          if (typeof child.type === 'string') return child
-          const newChild = React.cloneElement(child, {
-            handleClick,
-          })
-          const typeItem = newChild.props.value.split('-')[0]
-          if (type !== null && type !== typeItem) {
-            type = typeItem
-            return (
-              <>
-                <SeparatorLine />
-                {newChild}
-              </>
-            )
-          }
-          type = typeItem
-          return newChild
-        })}
+        {options()}
       </ul>
     </>
   )

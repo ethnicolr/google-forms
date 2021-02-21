@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-export const Textarea = styled.textarea`
+const Textarea = styled.textarea`
   font-size: 34px;
   font-weight: 400;
   outline: none;
@@ -14,7 +14,7 @@ export const Textarea = styled.textarea`
   border: none;
   resize: none;
 `
-export const Input = styled.input`
+const Input = styled.input`
   font-size: 34px;
   font-weight: 400;
   outline: none;
@@ -29,23 +29,23 @@ export const Input = styled.input`
   }
 `
 
-export const TextareaGrey = styled(Textarea)`
+const TextareaGrey = styled(Textarea)`
   background-color: #f8f9fa;
 `
 
-export const ContainerField = styled.div`
+const ContainerField = styled.div`
   position: relative;
 `
 
-export const Container = styled.div`
+const Container = styled.div`
   border-bottom: 1px solid black;
 `
 
-export const Button = styled.button`
+const Button = styled.button`
   color: turquoise;
 `
 
-export const EditStripe = styled.div`
+const EditStripe = styled.div`
   position: absolute;
   background-color: #4285f4;
   border-top-left-radius: 8px;
@@ -57,7 +57,7 @@ export const EditStripe = styled.div`
   z-index: 5;
 `
 
-export const EditStripeInput = styled.div`
+const EditStripeInput = styled.div`
   position: absolute;
   height: 1px;
   width: 100%;
@@ -65,3 +65,28 @@ export const EditStripeInput = styled.div`
   background-color: ${(props) =>
     props.isEdit === true ? 'rgba(0, 0, 0, 0.12);' : 'rgb(103, 58, 183)'};
 `
+
+const List = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-bottom: 20px;
+`
+
+const ListItem = styled.li`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`
+export {
+  Textarea,
+  Input,
+  TextareaGrey,
+  ContainerField,
+  Container,
+  Button,
+  EditStripe,
+  EditStripeInput,
+  List,
+  ListItem,
+}

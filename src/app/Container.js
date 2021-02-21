@@ -1,19 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { jsx } from '@emotion/react'
 import React, { useEffect, useState, useRef } from 'react'
 import { useOnClickOutside } from './hooks/useOnClickOutside'
-import {
-  Button,
-  Textarea,
-  EditStripe,
-  ContainerField,
-  EditStripeInput,
-} from './lib'
+import { EditStripe } from './lib'
 
 export const ContextEditMod = React.createContext()
 
-export default function Container({ Component, head, data }) {
-  const [edit, setEdit] = useState(true)
+export default function Container({ isHead = false, children }) {
+  const [edit, setEdit] = useState(false)
 
   const wrapperRef = useRef(null)
 
@@ -29,14 +22,13 @@ export default function Container({ Component, head, data }) {
         padding: '25px 15px',
         borderRadius: '8px',
         textAlign: 'left',
-        width: '500px',
         position: 'relative',
         marginBottom: '20px',
       }}
       ref={wrapperRef}
     >
       {' '}
-      {head ? (
+      {isHead ? (
         <div
           css={{
             width: '100%',
@@ -52,11 +44,14 @@ export default function Container({ Component, head, data }) {
         ></div>
       ) : null}
       {edit ? <EditStripe /> : null}
-      {/* <Component data={data} /> */}
-      {React.cloneElement(children, { edit })}
+      <ContextEditMod.Provider value={edit}>
+        {children}
+        {/* {React.cloneElement(children, { edit })} */}
+      </ContextEditMod.Provider>
     </div>
   )
 }
-export function useEditMod() {
+
+export function useContextEditMod() {
   return React.useContext(ContextEditMod)
 }

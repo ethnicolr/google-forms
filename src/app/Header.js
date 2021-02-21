@@ -4,27 +4,28 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useEditMod } from './Container'
 import { Textarea, ContainerField, EditStripeInput } from './lib'
 
-export default function Header() {
-  const [state, setState] = useState({
-    title: 'Новая форма',
-    desc: 'Описание',
-  })
-  const { edit } = useEditMod()
+const defaultState = {
+  title: 'Новая форма',
+  desc: 'Описание',
+}
 
+export default function Header({
+  edit,
+  changeStateHeader,
+  data = defaultState,
+}) {
   const handleChange = (e) => {
     const { name, value } = e.target
-    setState((state) => ({
-      ...state,
-      [name]: value,
-    }))
+    changeStateHeader(name, value)
   }
+
   return (
     <>
       <form>
         <ContainerField>
           <Textarea
             spellCheck='false'
-            value={state.title}
+            value={data.title}
             onChange={handleChange}
             name='title'
             onFocus={(e) => e.target.select()}
@@ -37,7 +38,7 @@ export default function Header() {
             spellCheck='true'
             onChange={handleChange}
             name='desc'
-            value={state.desc}
+            value={data.desc}
             onFocus={(e) => e.target.select()}
           />
           {edit ? <EditStripeInput /> : null}

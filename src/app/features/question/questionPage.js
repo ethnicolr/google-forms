@@ -8,7 +8,8 @@ import { useContextState } from './../../App'
 import Select from './../../components/Select'
 import Option from './../../components/Option'
 import useQuestionState from './../../hooks/useQuestionState'
-import { OptionRadio } from './../../assets/optionRadio'
+import * as Icon from './../../assets/icons'
+
 export default function QuestionPage({ data }) {
   const [_, updateQuestion] = useContextState()
   const [
@@ -51,31 +52,52 @@ export default function QuestionPage({ data }) {
         flexWrap: 'wrap',
       }}
     >
-      <div css={{ width: '60%' }}>
+      <div css={{ width: '50%' }}>
         <QestionInput changeTitle={changeTitle} edit={edit} />
       </div>
       {edit ? (
-        <div css={{ width: '30%' }}>
+        <div css={{ width: '40%' }}>
           <Select onChange={changeQuestionType} seleced={state.parameters.type}>
-            <Option value={'text-line'}>Текст (строка)</Option>
-            <Option value={'text-paragraph'}>Текст (абзац)</Option>
+            <Option value={'text-line'}>
+              <Icon.Line />
+              Текст (строка)
+            </Option>
+            <Option value={'text-paragraph'}>
+              <Icon.Line />
+              Текст (абзац)
+            </Option>
             <Option value={'select-radio'}>
-              <OptionRadio />
+              <Icon.Radio />
               Один из списка
             </Option>
             <Option value={'select-check'}>
-              <OptionRadio />
+              <Icon.CheckBox />
               Несколько из списка
             </Option>
             <Option value={'select-drop'}>
-              <OptionRadio />
+              <Icon.Drop />
               Раскрывающийся список
             </Option>
-            <Option value={'range'}>Шкала</Option>
-            <Option value={'grid-radio'}>Сетка (можественный выбор)</Option>
-            <Option value={'grid-check'}>Сетка флажков</Option>
-            <Option value={'date'}>Дата</Option>
-            <Option value={'time'}>Время</Option>
+            <Option value={'range'}>
+              <Icon.Scale />
+              Шкала
+            </Option>
+            <Option value={'grid-radio'}>
+              <Icon.Grid />
+              Сетка (можественный выбор)
+            </Option>
+            <Option value={'grid-check'}>
+              <Icon.GridRadio />
+              Сетка флажков
+            </Option>
+            <Option value={'date'}>
+              <Icon.Calendar />
+              Дата
+            </Option>
+            <Option value={'time'}>
+              <Icon.Time />
+              Время
+            </Option>
           </Select>
         </div>
       ) : null}
