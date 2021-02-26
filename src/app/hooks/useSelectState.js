@@ -8,6 +8,7 @@ function stateReducer(state, action) {
     }
 
     case 'delete': {
+      console.log('delete')
       return state.filter((item) => item.id !== action.id)
     }
 

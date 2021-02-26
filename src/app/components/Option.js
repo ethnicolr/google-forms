@@ -10,16 +10,13 @@ const ListItem = styled.li`
   poiner: cursor;
   letter-spacing: 0.2px;
   cursor: pointer;
-  ${'' /* color: ${(props) => (props.isSelected ? 'red' : 'green')}; */}
   &:hover {
     background-color: #eeeeee;
   }
 `
 
-export default function Option({ handleClick, value, children, isSelected }) {
+export default function Option({ handleClick, value, children, isSelect }) {
   return (
-    <ListItem onClick={() => handleClick(value, children)}>
-      {React.Children.map(children, (child) => child)}
-    </ListItem>
+    <ListItem onClick={() => handleClick(value, children)}>{children}</ListItem>
   )
 }

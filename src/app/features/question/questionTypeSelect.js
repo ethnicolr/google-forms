@@ -13,16 +13,18 @@ export default function QuestionTypeSelect({
   updateParameters,
   initialState,
 }) {
+  const [edit] = useContextEditMod()
   const [state, addItem, deleteItem, editItem] = useSelectState(initialState)
-  const edit = useContextEditMod()
+
   useEffect(() => {
     updateParameters(state, head)
   }, [updateParameters, state, head])
+
   return (
     <div>
       {grid ? <h4 css={{ color: '#000' }}>{head}</h4> : null}
       <List>
-        {state.map((elem) => {
+        {state.map((elem, ind, arr) => {
           return (
             <ListItem key={elem.id}>
               <QestionSelectItem
@@ -31,6 +33,9 @@ export default function QuestionTypeSelect({
                 onChange={editItem}
                 onDelete={deleteItem}
                 value={elem.value}
+                type={mode}
+                index={ind}
+                length={arr.length}
               />
             </ListItem>
           )

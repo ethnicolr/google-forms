@@ -1,59 +1,53 @@
-/** @jsxImportSource @emotion/react */
-import { jsx } from '@emotion/react'
-import React, { useState } from 'react'
-import { nanoid } from 'nanoid'
-import QuestionSelect from './questionTypeSelect'
-import QuestionRange from './questionTypeRange'
-import QuestionText from './questionTypeText'
+import React from 'react'
+import Select from './../../components/Select'
+import Option from './../../components/Option'
+import * as Icon from './../../assets/icons'
 
-const initialState = [{ value: 'Вариант 1', id: nanoid() }]
-
-export default function QuestionSwitch({
-  typeItems,
-  updateParameters,
-  initialParam,
-}) {
-  function renderSwitch(item) {
-    const [type, mode] = item.split('-')
-
-    switch (type) {
-      case 'text':
-        return <QuestionText mode={mode} />
-      case 'range':
-        return <QuestionRange />
-      case 'select':
-        return (
-          <QuestionSelect
-            mode={mode}
-            grid={false}
-            updateParameters={updateParameters}
-            head={'items'}
-            initialState={initialParam.items}
-          />
-        )
-      case 'grid':
-        return (
-          <div css={{ display: 'flex' }}>
-            <QuestionSelect
-              mode={mode}
-              grid={true}
-              head={'column'}
-              initialState={initialParam.items}
-              updateParameters={updateParameters}
-            />
-            <QuestionSelect
-              mode={mode}
-              grid={true}
-              head={'row'}
-              initialState={initialParam.row}
-              updateParameters={updateParameters}
-            />{' '}
-          </div>
-        )
-      default:
-        return null
-    }
-  }
-
-  return <>{renderSwitch(typeItems)}</>
+export default function QuestionSwitch({ switchQieston, current }) {
+  return (
+    <>
+      <Select onChange={switchQieston} seleced={current}>
+        <Option value={'text-line'}>
+          <Icon.Line />
+          Текст (строка)
+        </Option>
+        <Option value={'text-paragraph'}>
+          <Icon.Line />
+          Текст (абзац)
+        </Option>
+        <Option value={'select-radio'}>
+          <Icon.Radio />
+          Один из списка
+        </Option>
+        <Option value={'select-check'}>
+          <Icon.CheckBox />
+          Несколько из списка
+        </Option>
+        <Option value={'select-drop'}>
+          <Icon.Drop />
+          Раскрывающийся список
+        </Option>
+        <Option value={'range'}>
+          <Icon.Scale />
+          Шкала
+        </Option>
+        <Option value={'grid-radio'}>
+          <Icon.Grid />
+          Сетка (можественный выбор)
+        </Option>
+        <Option value={'grid-check'}>
+          <Icon.GridRadio />
+          Сетка флажков
+        </Option>
+        <Option value={'date'}>
+          <Icon.Calendar />
+          Дата
+        </Option>
+        <Option value={'time'}>
+          <Icon.Time />
+          Время
+        </Option>
+      </Select>
+    </>
+  )
 }

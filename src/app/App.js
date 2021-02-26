@@ -17,11 +17,16 @@ const initialState = {
 }
 
 function App() {
-  const [state, addQuestion, editQuestion, editHeader] = useLocalStorageState(
-    'formData',
-    initialState
-  )
-  const value = [state, editQuestion]
+  const {
+    state,
+    addQuestion,
+    editQuestion,
+    editHeader,
+    deleteQuestion,
+    cloneQuestion,
+  } = useLocalStorageState('formData', initialState)
+
+  const value = { state, editQuestion, deleteQuestion, cloneQuestion }
 
   return (
     <div css={{ margin: '100px auto', width: '650px' }}>

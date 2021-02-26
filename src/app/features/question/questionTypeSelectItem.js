@@ -2,13 +2,10 @@
 import { jsx } from '@emotion/react'
 import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
-// import { useEditMod } from '../../Container'
-
-// import Input from '@material-ui/core/Input'
-import { EditStripeInput } from '../../lib'
+import { useContextEditMod } from './../../Container'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
+import { Radio, CheckBox } from './../../assets/icons'
 
 const Input = styled.input`
   padding: 0;
@@ -29,10 +26,12 @@ export default function QuestionTypeSelectItem({
   onDelete,
   id,
   type,
-  edit,
+  index,
+  length,
 }) {
   const inputEl = useRef(null)
-  // const { edit } = useEditMod()
+  const [edit] = useContextEditMod()
+
   const handleChange = (e) => {
     onChange(id, e.target.value)
   }
@@ -40,6 +39,15 @@ export default function QuestionTypeSelectItem({
     inputEl.current.focus()
     inputEl.current.select()
   }, [])
+
+  const IconType = (type) => {
+    const icons = {
+      radio: <Radio />,
+      drop: `${index + 1}.`,
+      check: <CheckBox />,
+    }
+    return icons[type]
+  }
 
   return (
     <div
@@ -51,7 +59,7 @@ export default function QuestionTypeSelectItem({
         position: 'relative',
       }}
     >
-      <RadioButtonUncheckedIcon color='disabled' />
+      {IconType(type)}
       <Input
         ref={inputEl}
         id='standard-basic'
@@ -62,9 +70,9 @@ export default function QuestionTypeSelectItem({
         onFocus={(e) => e.target.select()}
       />
       {edit ? (
-        <IconButton aria-label='delete' onClick={() => onDelete(id)}>
-          <DeleteIcon />
-        </IconButton>
+        length > 1 ? (
+          <button onClick={() => onDelete(id)}>Delete</button>
+        ) : null
       ) : null}
     </div>
   )

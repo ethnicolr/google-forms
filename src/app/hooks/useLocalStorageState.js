@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid'
 
 function stateReducer(state, action) {
   switch (action.type) {
-    case 'addQuestion': {
+    case 'ADD_QUESTION': {
       const newQuestion = {
         id: nanoid(),
         title: '',
@@ -13,7 +13,40 @@ function stateReducer(state, action) {
       return { ...state, questions: [...state.questions, newQuestion] }
     }
 
-    case 'editQuestion': {
+    case 'DELETE_QUESTION': {
+      const filterQuestions = state.questions.filter(
+        (question) => question.id !== action.payload
+      )
+      return { ...state, questions: filterQuestions }
+    }
+
+    case 'ClONE_QUESTION': {
+      const question = state.questions.find(
+        (question) => question.id === action.payload
+      )
+      const cloned = (question, newObj) => {
+        const keys = Object.keys(question)
+        return keys.reduce((result, key) => {
+          let value = question[key]
+          if (Array.isArray(value)) {
+            result[key] = cloned(value, [])
+          } else if (typeof value === 'object') {
+            result[key] = cloned(value, {})
+          }
+          if (key === 'id') {
+            result[key] = nanoid()
+          } else {
+            result[key] = value
+          }
+
+          return result
+        }, newObj)
+      }
+      let newQuestion = cloned(question, {})
+      return { ...state, questions: [...state.questions, newQuestion] }
+    }
+
+    case 'EDIT_QUESTION': {
       const { question } = action.payload
       return {
         ...state,
@@ -23,7 +56,7 @@ function stateReducer(state, action) {
       }
     }
 
-    case 'editHeader': {
+    case 'EDIT_HEADER': {
       const [key, value] = action.payload
       const header = { ...state.header, [key]: value }
       return { ...state, header }
@@ -40,17 +73,32 @@ export function useLocalStorageState(key, defaultValue = {}) {
   }
   const [state, dispatch] = useReducer(stateReducer, defaultValue, init)
 
-  const addQuestion = () => dispatch({ type: 'addQuestion' })
+  const addQuestion = () => dispatch({ type: 'ADD_QUESTION' })
+  const deleteQuestion = useCallback((id) => {
+    return dispatch({ type: 'DELETE_QUESTION', payload: id })
+  }, [])
+
+  const cloneQuestion = useCallback((id) => {
+    return dispatch({ type: 'ClONE_QUESTION', payload: id })
+  }, [])
+
   const editQuestion = useCallback(
-    (question) => dispatch({ type: 'editQuestion', payload: { question } }),
+    (question) => dispatch({ type: 'EDIT_QUESTION', payload: { question } }),
     []
   )
   const editHeader = (key, value) =>
-    dispatch({ type: 'editHeader', payload: [key, value] })
+    dispatch({ type: 'EDIT_HEADER', payload: [key, value] })
 
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(state))
   }, [key, state])
 
-  return [state, addQuestion, editQuestion, editHeader]
+  return {
+    state,
+    addQuestion,
+    editQuestion,
+    editHeader,
+    deleteQuestion,
+    cloneQuestion,
+  }
 }
