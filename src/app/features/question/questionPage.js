@@ -80,7 +80,7 @@ export default function QuestionPage({ data }) {
         <QuestionTypeRender
           typeItems={state.type}
           updateParameters={changeParameters}
-          initialParam={state.parameters}
+          parameters={state.parameters}
         />
       </div>
       <button onClick={() => deleteQuestion(state.id)}>Delete QUEST</button>

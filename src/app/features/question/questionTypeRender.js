@@ -11,7 +11,7 @@ const initialState = [{ value: 'Вариант 1', id: nanoid() }]
 export default function QuestionSwitch({
   typeItems,
   updateParameters,
-  initialParam,
+  parameters,
 }) {
   function renderSwitch(item) {
     const [type, mode] = item.split('-')
@@ -28,7 +28,7 @@ export default function QuestionSwitch({
             grid={false}
             updateParameters={updateParameters}
             head={'items'}
-            initialState={initialParam.items}
+            initialState={parameters.items}
             type={type}
           />
         )
@@ -39,7 +39,7 @@ export default function QuestionSwitch({
               mode={mode}
               grid={true}
               head={'column'}
-              initialState={initialParam.items}
+              initialState={parameters.items}
               updateParameters={updateParameters}
               type={type}
             />
@@ -47,7 +47,7 @@ export default function QuestionSwitch({
               mode={mode}
               grid={true}
               head={'row'}
-              initialState={initialParam.row}
+              initialState={parameters.row}
               updateParameters={updateParameters}
               type={type}
             />{' '}

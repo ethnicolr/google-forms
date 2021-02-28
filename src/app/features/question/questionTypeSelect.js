@@ -13,6 +13,7 @@ export default function QuestionTypeSelect({
   updateParameters,
   initialState,
 }) {
+  console.log(initialState)
   const [edit] = useContextEditMod()
   const [state, addItem, deleteItem, editItem] = useSelectState(initialState)
 

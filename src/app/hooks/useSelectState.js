@@ -24,8 +24,8 @@ function stateReducer(state, action) {
       break
   }
 }
-
-export function useSelectState(data) {
+const initialState = [{ value: 'row 1', id: nanoid() }]
+export function useSelectState(data = initialState) {
   const [state, dispatch] = useReducer(stateReducer, data)
 
   const addItem = () => dispatch({ type: 'create' })

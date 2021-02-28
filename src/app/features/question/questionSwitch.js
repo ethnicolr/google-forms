@@ -19,7 +19,7 @@ export default function QuestionSwitch({ switchQieston, current }) {
           <Icon.Radio />
           Один из списка
         </Option>
-        <Option value={'select-check'}>
+        <Option value={'select-checkbox'}>
           <Icon.CheckBox />
           Несколько из списка
         </Option>
