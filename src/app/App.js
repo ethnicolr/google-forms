@@ -1,15 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
-import React, { useState, useCallback } from 'react'
-import './App.css'
-import Header from './Header'
-import Container from './Container'
-import QuestionPage from './features/question/questionPage'
-import Button from '@material-ui/core/Button'
-import { nanoid } from 'nanoid'
-import { useLocalStorageState } from './hooks/useLocalStorageState'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Header from './components/Header'
+import QuestionList from './features/question/questionList'
 import ViewForm from './features/view/viewFormPage'
+import { useLocalStorageState } from './hooks/useLocalStorageState'
+import { Button } from './lib'
 
 export const StateContex = React.createContext()
 
@@ -32,25 +29,24 @@ function App() {
 
   return (
     <Router>
-      <div css={{ margin: '100px auto', width: '650px' }}>
+      <div
+        css={{
+          margin: '100px auto',
+          width: '650px',
+        }}
+      >
         <StateContex.Provider value={value}>
           <Route exact path='/'>
-            <Container isHead={true}>
-              <Header data={state.header} changeStateHeader={editHeader} />
-            </Container>
-
-            {state.questions.map((item) => {
-              return (
-                <Container key={item.id}>
-                  <QuestionPage data={item} />
-                </Container>
-              )
-            })}
-            <Button onClick={addQuestion} variant='contained'>
-              Add question
-            </Button>
-            <button onClick={() => window.open('/view')}>View</button>
+            <Header data={state.header} changeStateHeader={editHeader} />
+            <QuestionList questions={state.questions} />
+            <div>
+              <Button onClick={addQuestion} variant='contained'>
+                Add question
+              </Button>
+              <Button onClick={() => window.open('/view')}>View</Button>
+            </div>
           </Route>
+
           <Route exact path='/view'>
             <ViewForm />
           </Route>

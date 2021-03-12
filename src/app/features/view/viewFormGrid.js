@@ -1,18 +1,29 @@
+/** @jsxImportSource @emotion/react */
 import React from 'react'
+import styled from '@emotion/styled'
+
+const TD = styled.td`
+  height: 2.5em;
+  min-width: 48px;
+  padding: 0.25em;
+  text-align: center;
+  vertical-align: middle;
+  width: 120px;
+`
 
 export default function ViewFormGrid({ columns, rows, type }) {
   const tableSpace = [{ value: '&nbsp;' }, ...rows]
   return (
-    <table>
+    <table css={{ borderCollapse: 'collapse' }}>
       <tbody>
         {rows.map((item, ind) => {
           let head = null
           if (ind === 0) {
             head = (
               <tr>
-                <td>&nbsp;</td>
+                <TD>&nbsp;</TD>
                 {columns.map((column) => (
-                  <td>{column.value}</td>
+                  <TD>{column.value}</TD>
                 ))}
               </tr>
             )
@@ -20,12 +31,16 @@ export default function ViewFormGrid({ columns, rows, type }) {
           return (
             <>
               {head}
-              <tr>
-                <td>{item.value}</td>
+              <tr
+                css={{
+                  backgroundColor: '#f8f9fa',
+                }}
+              >
+                <TD>{item.value}</TD>
                 {columns.map((column) => (
-                  <td>
+                  <TD>
                     <input type={type} name={item.value} />
-                  </td>
+                  </TD>
                 ))}
               </tr>
             </>

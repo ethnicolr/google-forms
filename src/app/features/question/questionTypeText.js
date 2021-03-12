@@ -1,25 +1,24 @@
+/** @jsxImportSource @emotion/react */
 import React from 'react'
-import TextareaAutosize from '@material-ui/core/TextareaAutosize'
-import TextField from '@material-ui/core/TextField'
-import { makeStyles } from '@material-ui/core/styles'
-const useStyles = makeStyles({
-  title: {
-    color: '#000',
-  },
-})
-export default function QuestionTypeText({ mode }) {
-  const classes = useStyles()
 
-  let text
-  if (mode === 'paragraph') {
-    text = 'Long answer text'
-  }
-  if (mode === 'line') {
-    text = 'Short answer text'
-  }
+export default function QuestionTypeText({ mode }) {
   return (
-    <div>
-      <h2 className={classes.title}>{text}</h2>
+    <div
+      css={{
+        width: '80%',
+        borderBottom: '1px dotted rgba(0,0,0,0.38)',
+        marginBottom: '30px',
+      }}
+    >
+      <h2
+        css={{
+          fontSize: '14px',
+          color: '#70757a',
+          fontWeight: '400',
+        }}
+      >
+        {mode === 'line' ? 'Краткий ответ' : 'Развернутый ответ'}
+      </h2>
     </div>
   )
 }

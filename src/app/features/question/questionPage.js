@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useReducer, useEffect, useCallback } from 'react'
-import { useContextEditMod } from './../../Container'
+import { useContextEditMod } from './../../components/Wrapper'
 import { useContextState } from './../../App'
-import QestionInput from './questionHeading'
+import QuestionHead from './questionHead'
 import QuestionTypeRender from './questionTypeRender'
 import QuestionSwitch from './questionSwitch'
 
@@ -65,7 +65,7 @@ export default function QuestionPage({ data }) {
       }}
     >
       <div css={{ width: '50%' }}>
-        <QestionInput changeTitle={changeTitle} edit={edit} />
+        <QuestionHead changeTitle={changeTitle} edit={edit} />
       </div>
       {edit ? (
         <div css={{ width: '40%' }}>
@@ -76,7 +76,15 @@ export default function QuestionPage({ data }) {
         </div>
       ) : null}
 
-      <div css={{ width: '100%', marginTop: '30px' }}>
+      <div
+        css={{
+          width: '100%',
+          marginTop: '30px',
+          borderBottom: '1px solid #dadce0',
+          marginBottom: '10px',
+          paddingBottom: '20px',
+        }}
+      >
         <QuestionTypeRender
           typeItems={state.type}
           updateParameters={changeParameters}

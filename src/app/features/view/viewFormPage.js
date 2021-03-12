@@ -1,6 +1,8 @@
 import React from 'react'
 import { useContextState } from './../../App'
 import ViewFormGrid from './viewFormGrid'
+import Container from '../../components/Container'
+import { Input, Textarea } from './../../lib'
 
 export default function ViewFormPage() {
   const { state } = useContextState()
@@ -21,7 +23,11 @@ export default function ViewFormPage() {
     }
     switch (baseType) {
       case 'text': {
-        return subType === 'line' ? <input type='text' /> : <textarea />
+        return subType === 'line' ? (
+          <Input type='text' placeholder='мой ответ' />
+        ) : (
+          <Textarea placeholder='мой ответ' />
+        )
       }
       case 'select':
         return generateList(subType, parameters)
@@ -39,18 +45,20 @@ export default function ViewFormPage() {
   }
   return (
     <div>
-      <h1>{state.header.title}</h1>
-      <h2>{state.header.desc}</h2>
+      <Container isHead={true}>
+        <h1>{state.header.title}</h1>
+        <h2>{state.header.desc}</h2>
+      </Container>
       {state.questions.map((question) => {
         const { id, title, desc, type, parameters } = question
         return (
-          <div key={id}>
+          <Container key={id}>
             <h2>{title}</h2>
             {<h2>{desc}</h2> || null}
             <form>
               <ul>{renderParapmenetrs(type, parameters, id)}</ul>
             </form>
-          </div>
+          </Container>
         )
       })}
     </div>

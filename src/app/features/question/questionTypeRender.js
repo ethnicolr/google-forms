@@ -1,12 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { jsx } from '@emotion/react'
-import React, { useState } from 'react'
-import { nanoid } from 'nanoid'
 import QuestionSelect from './questionTypeSelect'
 import QuestionRange from './questionTypeRange'
 import QuestionText from './questionTypeText'
-
-const initialState = [{ value: 'Вариант 1', id: nanoid() }]
 
 export default function QuestionSwitch({
   typeItems,
@@ -20,7 +15,7 @@ export default function QuestionSwitch({
       case 'text':
         return <QuestionText mode={mode} />
       case 'range':
-        return <QuestionRange />
+        return <QuestionRange updateParameters={updateParameters} />
       case 'select':
         return (
           <QuestionSelect
@@ -28,7 +23,7 @@ export default function QuestionSwitch({
             grid={false}
             updateParameters={updateParameters}
             head={'items'}
-            initialState={parameters.items}
+            data={parameters.items}
             type={type}
           />
         )
@@ -39,15 +34,15 @@ export default function QuestionSwitch({
               mode={mode}
               grid={true}
               head={'column'}
-              initialState={parameters.items}
+              data={parameters.coumn}
               updateParameters={updateParameters}
               type={type}
             />
             <QuestionSelect
               mode={mode}
               grid={true}
-              head={'row'}
-              initialState={parameters.row}
+              head={'items'}
+              data={parameters.items}
               updateParameters={updateParameters}
               type={type}
             />{' '}

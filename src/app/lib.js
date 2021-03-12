@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 const Textarea = styled.textarea`
-  font-size: 34px;
+  ${'' /* font-size: 34px; */}
   font-weight: 400;
   outline: none;
   padding: 0;
@@ -25,7 +25,7 @@ const Input = styled.input`
   height: 48px;
   border: none;
   &:hover {
-    background-color: #f8f9fa;
+    color: red;
   }
 `
 
@@ -42,7 +42,16 @@ const Container = styled.div`
 `
 
 const Button = styled.button`
-  color: turquoise;
+  border: none;
+  background: none;
+`
+const ButtonAddParam = styled(Button)`
+  cursor: text;
+  padding: 5px;
+  box-size
+  &:hover {
+    border-bottom: 1px solid rgb(118, 118, 118);
+  }
 `
 
 const EditStripe = styled.div`
@@ -89,4 +98,5 @@ export {
   EditStripeInput,
   List,
   ListItem,
+  ButtonAddParam,
 }

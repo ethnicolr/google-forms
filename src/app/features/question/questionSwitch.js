@@ -35,7 +35,7 @@ export default function QuestionSwitch({ switchQieston, current }) {
           <Icon.Grid />
           Сетка (можественный выбор)
         </Option>
-        <Option value={'grid-check'}>
+        <Option value={'grid-checkbox'}>
           <Icon.GridRadio />
           Сетка флажков
         </Option>

@@ -2,10 +2,10 @@
 import { jsx } from '@emotion/react'
 import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
-import { useContextEditMod } from './../../Container'
+import { useContextEditMod } from './../../components/Wrapper'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { Radio, CheckBox } from './../../assets/icons'
+import { UnRadio, UnCheckBox } from './../../assets/icons'
 
 const Input = styled.input`
   padding: 0;
@@ -14,6 +14,8 @@ const Input = styled.input`
   border: none;
   outline: none;
   padding: 15px 10px;
+  border: 1px solid transparent;
+  fontsize: 14px;
   &:hover {
     border-bottom: ${(props) =>
       props.isEdit ? '1px solid rgba(0, 0, 0, 0.12)' : 'none'};
@@ -28,6 +30,7 @@ export default function QuestionTypeSelectItem({
   type,
   index,
   length,
+  head,
 }) {
   const inputEl = useRef(null)
   const [edit] = useContextEditMod()
@@ -42,9 +45,18 @@ export default function QuestionTypeSelectItem({
 
   const IconType = (type) => {
     const icons = {
-      radio: <Radio />,
-      drop: `${index + 1}.`,
-      check: <CheckBox />,
+      radio: <UnRadio />,
+      drop: (
+        <div
+          css={{
+            width: '20px',
+            height: '20px',
+            marginRight: '10px',
+            fontSize: '14px',
+          }}
+        >{`${index + 1}.`}</div>
+      ),
+      checkbox: <UnCheckBox />,
     }
     return icons[type]
   }
@@ -59,7 +71,7 @@ export default function QuestionTypeSelectItem({
         position: 'relative',
       }}
     >
-      {IconType(type)}
+      {head === 'column' ? `${index + 1}.` : IconType(type)}
       <Input
         ref={inputEl}
         id='standard-basic'

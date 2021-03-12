@@ -1,54 +1,71 @@
-import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+import React, { useState, useEffect } from 'react'
+import Select from './../../components/Select'
+import Option from './../../components/Option'
+import { Input } from './../../lib'
 import { nanoid } from 'nanoid'
 
-export default function QuestionTypeRange() {
-  const [range, setRagne] = useState({ from: 0, to: 10 })
+export default function QuestionTypeRange({ updateParameters }) {
+  const [rangeState, setRangeState] = useState({
+    from: 0,
+    to: 10,
+    labelFrom: '',
+    labelTo: '',
+  })
 
-  const handleChange = (e) => {
+  const handleChange = (key) => {
+    return (value) => {
+      setRangeState((range) => ({
+        ...range,
+        [key]: value,
+      }))
+    }
+  }
+
+  const handleChangeInput = (e) => {
     const { name, value } = e.target
-
-    setRagne((range) => ({
+    setRangeState((range) => ({
       ...range,
       [name]: value,
     }))
   }
+  useEffect(() => {
+    updateParameters(rangeState, 'range')
+  }, [updateParameters, rangeState])
 
   return (
     <div>
-      <FormControl>
-        <Select
-          labelId='demo-simple-select-label'
-          id='demo-simple-select'
-          value={range.from}
-          name='from'
-          onChange={handleChange}
-        >
-          <MenuItem value={0}>0</MenuItem>
-          <MenuItem value={1}>1</MenuItem>
-        </Select>
-      </FormControl>
-      -
-      <FormControl>
-        <Select
-          labelId='demo-simple-select-label'
-          id='demo-simple-select'
-          value={range.to}
-          name='to'
-          onChange={handleChange}
-        >
-          {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
-            <MenuItem key={nanoid()} value={value}>
-              {value}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <Select
+        onChange={handleChange('from')}
+        widthList='55px'
+        css={{ width: '50px', border: 'none' }}
+        cssList={{ width: '50px' }}
+      >
+        <Option value='number-1'>1</Option>
+        <Option value='number-2'>2</Option>
+      </Select>
+
+      <Select
+        onChange={handleChange('to')}
+        widthList='55px'
+        css={{ width: '50px', border: 'none' }}
+        cssList={{ width: '50px' }}
+      >
+        {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
+          <Option value={`number-${value}`}>{value}</Option>
+        ))}
+      </Select>
+      <Input
+        placeholder='Подпись (необязательно)'
+        name='labelFrom'
+        value={rangeState.labelFrom}
+        onChange={handleChangeInput}
+      />
+      <Input
+        placeholder='Подпись (необязательно)'
+        name='labelTo'
+        value={rangeState.labelTo}
+        onChange={handleChangeInput}
+      />
     </div>
   )
 }

@@ -1,26 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import { jsx } from '@emotion/react'
-import React, { useState } from 'react'
-import styled from '@emotion/styled'
+import React, { useState, useRef } from 'react'
+import { useOnClickOutside } from './../hooks/useOnClickOutside'
 
-const SeparatorLine = styled.div`
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  margin: 8px 0;
-`
-export default function Select({ children, onChange }) {
+export default function Select({ children, onChange, cssList, css }) {
   const [hidden, setHidden] = useState(false)
   const [selected, setSelected] = useState(children[0].props.children)
+  const refWrap = useRef(null)
 
-  const toggle = () => setHidden(!hidden)
+  useOnClickOutside(refWrap, () => setHidden(false))
 
   const handleClick = (value, children) => {
     onChange(value)
     setSelected(children)
-    toggle()
+    setHidden(false)
   }
 
-  function options() {
+  function generateOptions() {
     let type = null
+
     return React.Children.map(children, (child) => {
       if (typeof child.type === 'string') return child
       const isSelect = child.props.value === selected
@@ -33,7 +30,12 @@ export default function Select({ children, onChange }) {
         type = typeItem
         return (
           <>
-            <SeparatorLine />
+            <div
+              css={{
+                borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+                margin: '8px 0',
+              }}
+            />
             {newChild}
           </>
         )
@@ -44,7 +46,7 @@ export default function Select({ children, onChange }) {
   }
 
   return (
-    <>
+    <div ref={refWrap}>
       <button
         css={{
           display: 'flex',
@@ -55,30 +57,34 @@ export default function Select({ children, onChange }) {
           outline: 'none',
           border: '1px solid #dadce0',
           borderRadius: '5px',
+          ...css,
         }}
-        onClick={toggle}
+        onClick={() => setHidden(!hidden)}
       >
         {React.Children.map(selected, (item) => item)}
       </button>
-      <ul
-        css={{
-          display: hidden ? 'flex' : 'none',
-          width: '310px',
-          flexDirection: 'column',
-          position: 'absolute',
-          zIndex: '5',
-          background: '#ffffff',
-          color: '#000',
-          listStyle: 'none',
-          borderRadius: '4px',
-          boxShadow:
-            '0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 2px 6px 2px rgba(60, 64, 67, 0.149)',
-          fontSize: '15px',
-          padding: 0,
-        }}
-      >
-        {options()}
-      </ul>
-    </>
+      {hidden ? (
+        <ul
+          css={{
+            display: 'flex',
+            width: '310px',
+            flexDirection: 'column',
+            position: 'absolute',
+            zIndex: '5',
+            background: '#ffffff',
+            color: '#000',
+            listStyle: 'none',
+            borderRadius: '4px',
+            boxShadow:
+              '0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 2px 6px 2px rgba(60, 64, 67, 0.149)',
+            fontSize: '15px',
+            padding: 0,
+            ...cssList,
+          }}
+        >
+          {generateOptions()}
+        </ul>
+      ) : null}
+    </div>
   )
 }
