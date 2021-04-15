@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React from 'react'
 import Select from './../../components/Select'
 import Option from './../../components/Option'
@@ -5,7 +7,7 @@ import * as Icon from './../../assets/icons'
 
 export default function QuestionSwitch({ switchQieston, current }) {
   return (
-    <>
+    <div css={{ width: '40%' }}>
       <Select onChange={switchQieston} seleced={current}>
         <Option value={'text-line'}>
           <Icon.Line />
@@ -48,6 +50,6 @@ export default function QuestionSwitch({ switchQieston, current }) {
           Время
         </Option>
       </Select>
-    </>
+    </div>
   )
 }

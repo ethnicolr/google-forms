@@ -8,6 +8,7 @@ const ListItem = styled.li`
   padding: 10px 18px;
   font-size: 14px;
   poiner: cursor;
+  gap: 10px;
   letter-spacing: 0.2px;
   cursor: pointer;
   &:hover {

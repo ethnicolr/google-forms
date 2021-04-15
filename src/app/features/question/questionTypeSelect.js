@@ -6,6 +6,7 @@ import { useContextEditMod } from './../../components/Wrapper'
 import { useSelectState } from './../../hooks/useSelectState'
 import { List, ListItem, Button, ButtonAddParam } from './../../lib'
 import { nanoid } from 'nanoid'
+import * as Icon from './../../assets/icons'
 
 function stateReducer(state, action) {
   switch (action.type) {
@@ -54,6 +55,9 @@ export default function QuestionTypeSelect({
     } else {
       setBtnVisibl(true)
     }
+    if (grid) {
+      setBtnVisibl(true)
+    }
   }, [state, mode])
 
   const addItem = () => dispatch({ type: 'create' })
@@ -65,9 +69,14 @@ export default function QuestionTypeSelect({
     updateParameters(state, head)
   }, [updateParameters, state, head])
 
+  const titleBtn = head === 'Столбцы' ? 'столбец' : 'строку'
   return (
     <div>
-      {grid ? <h4 css={{ color: '#000' }}>{head}</h4> : null}
+      {grid ? (
+        <h4 css={{ color: '#202124', fontSize: '14px', fontWeight: 600 }}>
+          {head}
+        </h4>
+      ) : null}
       <List>
         {state.map((elem, ind, arr) => {
           return (
@@ -90,7 +99,7 @@ export default function QuestionTypeSelect({
       {edit ? (
         <div>
           <ButtonAddParam variant='contained' onClick={addItem}>
-            Добавить вариант
+            {`Добавить ${titleBtn}`}
           </ButtonAddParam>
           {!btnVisibl && (
             <ButtonAddParam variant='contained' onClick={addItemOther}>

@@ -57,6 +57,7 @@ export default function Select({ children, onChange, cssList, css }) {
           outline: 'none',
           border: '1px solid #dadce0',
           borderRadius: '5px',
+          gap: '10px',
           ...css,
         }}
         onClick={() => setHidden(!hidden)}

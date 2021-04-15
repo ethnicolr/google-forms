@@ -5,8 +5,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header'
 import QuestionList from './features/question/questionList'
 import ViewForm from './features/view/viewFormPage'
-import { useLocalStorageState } from './hooks/useLocalStorageState'
+import { useGlobalState } from './hooks/useGlobalState'
 import { Button } from './lib'
+import Container from './components/Container'
+import Wrapper, { useContextEditMod } from './components/Wrapper'
 
 export const StateContex = React.createContext()
 
@@ -23,7 +25,7 @@ function App() {
     editHeader,
     deleteQuestion,
     cloneQuestion,
-  } = useLocalStorageState('formData', initialState)
+  } = useGlobalState('formData', initialState)
 
   const value = { state, editQuestion, deleteQuestion, cloneQuestion }
 
@@ -37,7 +39,11 @@ function App() {
       >
         <StateContex.Provider value={value}>
           <Route exact path='/'>
-            <Header data={state.header} changeStateHeader={editHeader} />
+            <Wrapper>
+              <Container>
+                <Header data={state.header} changeStateHeader={editHeader} />
+              </Container>
+            </Wrapper>
             <QuestionList questions={state.questions} />
             <div>
               <Button onClick={addQuestion} variant='contained'>

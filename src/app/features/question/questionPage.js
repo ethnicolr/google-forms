@@ -5,94 +5,65 @@ import { useContextState } from './../../App'
 import QuestionHead from './questionHead'
 import QuestionTypeRender from './questionTypeRender'
 import QuestionSwitch from './questionSwitch'
+import styled from '@emotion/styled'
+import useQuestionState from '../../hooks/useQuestionState'
+import { ButtonIcon } from './../../lib'
+import * as Icon from './../../assets/icons'
 
-function stateReducer(state, action) {
-  switch (action.type) {
-    case 'changeTitle':
-      return { ...state, title: action.payload }
-
-    case 'changeQuestionType':
-      return { ...state, type: action.payload }
-
-    case 'changeParameters': {
-      const [params, type] = action.payload
-      return {
-        ...state,
-        parameters: { ...state.parameters, [type]: params },
-      }
-    }
-
-    default:
-      break
-  }
-}
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`
 
 export default function QuestionPage({ data }) {
-  const [state, dispatch] = useReducer(stateReducer, data)
   const {
     editQuestion: updateQuestion,
     deleteQuestion,
     cloneQuestion,
   } = useContextState()
+
+  const [
+    state,
+    changeTitle,
+    changeQuestionType,
+    changeParameters,
+  ] = useQuestionState(data)
+
   const [edit] = useContextEditMod()
-
-  const changeTitle = useCallback(
-    (value) => dispatch({ type: 'changeTitle', payload: value }),
-    []
-  )
-
-  const changeQuestionType = useCallback(
-    (type) => dispatch({ type: 'changeQuestionType', payload: type }),
-    []
-  )
-
-  const changeParameters = useCallback(
-    (params, type) =>
-      dispatch({ type: 'changeParameters', payload: [params, type] }),
-    []
-  )
 
   useEffect(() => {
     updateQuestion(state)
   }, [state, updateQuestion])
 
   return (
-    <div
-      css={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-      }}
-    >
-      <div css={{ width: '50%' }}>
-        <QuestionHead changeTitle={changeTitle} edit={edit} />
-      </div>
-      {edit ? (
-        <div css={{ width: '40%' }}>
-          <QuestionSwitch
-            switchQieston={changeQuestionType}
-            current={state.parameters.type}
-          />
-        </div>
-      ) : null}
-
+    <Container>
+      <QuestionHead changeTitle={changeTitle} edit={edit} title={data.title} />
+      {edit && (
+        <QuestionSwitch
+          switchQieston={changeQuestionType}
+          current={state.parameters.type}
+        />
+      )}
+      <QuestionTypeRender
+        typeItems={state.type}
+        updateParameters={changeParameters}
+        parameters={state.parameters}
+      />
       <div
         css={{
           width: '100%',
-          marginTop: '30px',
-          borderBottom: '1px solid #dadce0',
-          marginBottom: '10px',
-          paddingBottom: '20px',
+          display: 'flex',
+          justifyContent: 'flex-end',
         }}
       >
-        <QuestionTypeRender
-          typeItems={state.type}
-          updateParameters={changeParameters}
-          parameters={state.parameters}
-        />
+        <ButtonIcon onClick={() => deleteQuestion(state.id)}>
+          <Icon.Delete />
+        </ButtonIcon>
+        <ButtonIcon onClick={() => cloneQuestion(state.id)}>
+          <Icon.Copy />
+        </ButtonIcon>
       </div>
-      <button onClick={() => deleteQuestion(state.id)}>Delete QUEST</button>
-      <button onClick={() => cloneQuestion(state.id)}>clone QUEST</button>
-    </div>
+    </Container>
   )
 }

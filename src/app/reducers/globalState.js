@@ -1,7 +1,6 @@
-import { useState, useEffect, useReducer, useCallback } from 'react'
 import { nanoid } from 'nanoid'
 
-function stateReducer(state, action) {
+export function globalState(state, action) {
   switch (action.type) {
     case 'ADD_QUESTION': {
       const newQuestion = {
@@ -64,41 +63,5 @@ function stateReducer(state, action) {
 
     default:
       break
-  }
-}
-
-export function useLocalStorageState(key, defaultValue = {}) {
-  function init(defaultValue) {
-    return JSON.parse(window.localStorage.getItem(key)) || defaultValue
-  }
-  const [state, dispatch] = useReducer(stateReducer, defaultValue, init)
-
-  const addQuestion = () => dispatch({ type: 'ADD_QUESTION' })
-  const deleteQuestion = useCallback((id) => {
-    return dispatch({ type: 'DELETE_QUESTION', payload: id })
-  }, [])
-
-  const cloneQuestion = useCallback((id) => {
-    return dispatch({ type: 'ClONE_QUESTION', payload: id })
-  }, [])
-
-  const editQuestion = useCallback(
-    (question) => dispatch({ type: 'EDIT_QUESTION', payload: { question } }),
-    []
-  )
-  const editHeader = (key, value) =>
-    dispatch({ type: 'EDIT_HEADER', payload: [key, value] })
-
-  useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(state))
-  }, [key, state])
-
-  return {
-    state,
-    addQuestion,
-    editQuestion,
-    editHeader,
-    deleteQuestion,
-    cloneQuestion,
   }
 }

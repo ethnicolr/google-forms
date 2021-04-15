@@ -29,11 +29,16 @@ export default function QuestionSwitch({
         )
       case 'grid':
         return (
-          <div css={{ display: 'flex' }}>
+          <div
+            css={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
             <QuestionSelect
               mode={mode}
               grid={true}
-              head={'column'}
+              head={'Строки'}
               data={parameters.coumn}
               updateParameters={updateParameters}
               type={type}
@@ -41,7 +46,7 @@ export default function QuestionSwitch({
             <QuestionSelect
               mode={mode}
               grid={true}
-              head={'items'}
+              head={'Столбцы'}
               data={parameters.items}
               updateParameters={updateParameters}
               type={type}
@@ -53,5 +58,17 @@ export default function QuestionSwitch({
     }
   }
 
-  return <>{renderSwitch(typeItems)}</>
+  return (
+    <div
+      css={{
+        width: '100%',
+        marginTop: '30px',
+        borderBottom: '1px solid #dadce0',
+        marginBottom: '10px',
+        paddingBottom: '20px',
+      }}
+    >
+      {renderSwitch(typeItems)}
+    </div>
+  )
 }

@@ -3,9 +3,10 @@ import { jsx } from '@emotion/react'
 import React, { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { useContextEditMod } from './../../components/Wrapper'
-import IconButton from '@material-ui/core/IconButton'
-import DeleteIcon from '@material-ui/icons/Delete'
 import { UnRadio, UnCheckBox } from './../../assets/icons'
+import * as Icon from './../../assets/icons'
+
+import { ButtonIcon } from './../../lib'
 
 const Input = styled.input`
   padding: 0;
@@ -83,7 +84,9 @@ export default function QuestionTypeSelectItem({
       />
       {edit ? (
         length > 1 ? (
-          <button onClick={() => onDelete(id)}>Delete</button>
+          <ButtonIcon onClick={() => onDelete(id)}>
+            <Icon.Cross />
+          </ButtonIcon>
         ) : null
       ) : null}
     </div>

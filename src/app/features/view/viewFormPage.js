@@ -32,10 +32,11 @@ export default function ViewFormPage() {
       case 'select':
         return generateList(subType, parameters)
       case 'grid':
+        console.log(parameters)
         return (
           <ViewFormGrid
             columns={parameters.column}
-            rows={parameters.row}
+            rows={parameters.items}
             type={subType}
           />
         )
